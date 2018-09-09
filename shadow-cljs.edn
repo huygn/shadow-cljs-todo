@@ -1,0 +1,15 @@
+{:source-paths ["src"]
+ :dependencies [[cider/cider-nrepl "0.18.0"]
+                [org.clojure/tools.nrepl "0.2.13"]
+                [reagent "0.8.1" :exclusions [cljsjs/react]]]
+ :builds {:app {:output-dir "target/"
+                :asset-path "."
+                :target :browser
+                :modules {:main {:entries [app.main]}}
+                ; :module-hash-names true
+                ; :build-options {:manifest-name "manifest.json"}
+                ; :build-hooks [(app.util/hook)]
+                :devtools {:after-load app.main/reload!
+                           :http-root "target"
+                           :http-port 8080}
+                :release {:output-dir "dist/"}}}}
