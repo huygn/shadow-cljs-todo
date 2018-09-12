@@ -23,11 +23,11 @@
         update-all (fn [done-status]
                      (swap! todo-list
                             (fn [x done]
-                              (reduce-kv (fn [m k v] (assoc m k (update-one v done)))
+                              (reduce-kv (fn [m k v] (->> done (update-one v) (assoc m k)))
                                          (empty x)
                                          x))
                             done-status))]
-    (if (every? #(true? (:done %)) (vals @todo-list))
+    (if (every? #(-> % :done true?) (vals @todo-list))
       (update-all false)
       (update-all true))))
 
