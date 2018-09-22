@@ -32,7 +32,7 @@
       (update-all true))))
 
 (rum/defcs todo-input <
-  {:did-mount (fn [state] (-> state (rum/dom-node) .focus) state)}
+  {:did-mount (fn [state] (.focus (rum/dom-node state)) state)}
   (rum/local "" ::value)
   [state {:keys [initial-value on-save class placeholder]}]
   (let [value (::value state)
