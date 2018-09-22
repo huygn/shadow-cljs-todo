@@ -1,7 +1,7 @@
 {:source-paths ["src"]
  :dependencies [[cider/cider-nrepl "0.18.0"]
                 [org.clojure/tools.nrepl "0.2.13"]
-                [rum "0.11.2"]]
+                [rum "0.11.2" :exclusions [cljsjs/react cljsjs/react-dom]]]
  :builds {:app {:output-dir "target/"
                 :asset-path "."
                 :target :browser
