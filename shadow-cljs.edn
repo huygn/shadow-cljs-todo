@@ -7,7 +7,12 @@
  :builds {:app {:output-dir "target/"
                 :asset-path "."
                 :target :browser
-                :modules {:main {:entries [app.main]}}
+                :module-loader true
+                :modules {:main {:entries [app.main]}
+                          :page-home {:entries [app.pages.home]
+                                      :depends-on #{:main}}
+                          :page-todo {:entries [app.pages.todo]
+                                      :depends-on #{:main}}}
                 ; :module-hash-names true
                 ; :build-options {:manifest-name "manifest.json"}
                 ; :build-hooks [(app.util/hook)]

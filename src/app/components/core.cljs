@@ -20,3 +20,16 @@
 
         (apply js/React.createElement react-class
                (clj->js (sablono.util/html-to-dom-attrs opts)) new-children)))))
+
+(defn loadable
+  "Returns a Rum component. It will render the provided get-component's result
+  if it's loaded successfully."
+  [get-component resolver]
+  (rum/defcs loadable-component <
+    (rum/local false :loaded)
+    {:did-mount (fn [state]
+                  (let [loaded (:loaded state)]
+                    (-> (get-component) (.then #(reset! loaded true))))
+                  state)}
+    [{loaded :loaded}]
+    (when (true? @loaded) (resolver))))

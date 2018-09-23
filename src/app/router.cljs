@@ -1,9 +1,8 @@
 (ns app.router
   (:require [bidi.bidi :as bidi]
             [pushy.core :as pushy]
-            [app.components.core :as components]
-            [app.pages.todo :as todo]
-            [app.pages.home :as home]))
+            [shadow.loader :as loader]
+            [app.components.core :as components]))
 
 (def state "Router state" (atom {}))
 
@@ -12,8 +11,13 @@
         "todo" :todo}])
 
 (def components
-  {:home (home/home-component)
-   :todo (components/with-header todo/todo-component)})
+  {:home ((components/loadable
+           #(loader/load "page-home")
+           #((resolve 'app.pages.home/home-component))))
+   :todo (components/with-header
+           (components/loadable
+            #(loader/load "page-todo")
+            #((resolve 'app.pages.todo/todo-component))))})
 
 (defn get-component [route-state] (:component route-state))
 
