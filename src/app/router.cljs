@@ -1,45 +1,30 @@
 (ns app.router
-  (:require [bide.core :as r]
-            [rum.core :as rum]
-            [app.todo :as todo]))
+  (:require [bidi.bidi :as bidi]
+            [pushy.core :as pushy]
+            [app.components.core :as components]
+            [app.pages.todo :as todo]
+            [app.pages.home :as home]))
 
-(def navigate! r/navigate!)
+(def state "Router state" (atom {}))
 
-(def router
-  (r/router [["/" :home]
-             ["/todo" :todo]]))
+(def app-routes
+  ["/" {"" :home
+        "todo" :todo}])
 
-(rum/defc home []
-  [:div#home
-   [:h1.mb-4 "Home"]
-   [:nav [:a {:href "/todo"
-              :on-click (fn [e] (.preventDefault e) (r/navigate! router :todo))}
-          "Todo"]]])
+(def components
+  {:home (home/home-component)
+   :todo (components/with-header todo/todo-component)})
 
-(def routes
-  {:home (home)
-   :todo (todo/todo-component {:class "mx-auto shadow-lg"
-                               :style {:max-width "400px"}})})
+(defn get-component [route-state] (:component route-state))
 
-(def current-route (atom {}))
+(defn set-page! [match]
+  (println match)
+  (swap! state assoc
+         :page match
+         :component ((:handler match) components)))
 
-(defn get-component [route-data] ((:name route-data) routes))
+(def history
+  (pushy/pushy set-page! (partial bidi/match-route app-routes)))
 
-(defn on-navigate
-  "A function which will be called on each route change."
-  ([name params query]
-   (reset! current-route {:name name :params params :query query}))
-  ([name params query on-change]
-   (reset! current-route {:name name :params params :query query})
-   (on-change)))
-
-(defn start!
-  ([]
-   (r/start! router {:html5? true
-                     :default :home
-                     :on-navigate on-navigate}))
-
-  ([{on-change :on-change}]
-   (r/start! router {:html5? true
-                     :default :home
-                     :on-navigate #(on-navigate %1 %2 %3 on-change)})))
+(defn start! []
+  (pushy/start! history))

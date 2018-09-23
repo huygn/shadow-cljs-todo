@@ -1,4 +1,4 @@
-(ns app.todo
+(ns app.pages.todo
   (:require [rum.core :as rum]))
 
 ; {:123 {:id 123 :value "test" :done false}}
@@ -49,7 +49,10 @@
                              "Escape" (clear)
                              nil)}]))
 
-(rum/defc todo-component < rum/reactive [{:keys [class style]}]
+(rum/defc todo-component < rum/reactive
+  [{:keys [class style]
+    :or {class "mx-auto shadow-lg"
+         style {:max-width "400px"}}}]
   (let [items (vals (rum/react todo-list))]
     [:div {:class class :style style}
      [:div.relative.border.border-solid

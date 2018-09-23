@@ -1,7 +1,14 @@
-(ns app.core
-  (:require [sablono.util]))
+(ns app.components.core
+  (:require [rum.core :as rum]
+            [sablono.util]))
 
-(defn adapt-class [react-class]
+(rum/defc with-header [component]
+  [:div
+   [:nav.h-16.flex.items-center.mb-16
+    [:a {:href "/"} "Back"]]
+   (component)])
+
+(defn adapt-react-class [react-class]
   (fn [& args]
     (let [[opts children] (if (map? (first args))
                             [(first args) (rest args)]
