@@ -21,7 +21,7 @@
    :todo (todo/todo-component {:class "mx-auto shadow-lg"
                                :style {:max-width "400px"}})})
 
-(def current-route (atom (sorted-map)))
+(def current-route (atom {}))
 
 (defn get-component [route-data] ((:name route-data) routes))
 
