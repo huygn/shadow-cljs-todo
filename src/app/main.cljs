@@ -5,7 +5,7 @@
 (rum/defc app < rum/reactive []
   [:main.min-h-screen.bg-white.font-sans.leading-normal.text-grey-darker
    [:div.container.px-4.mx-auto
-    (router/get-component (rum/react router/state))]])
+    ((router/get-component (rum/react router/state)))]])
 
 (defn render []
   (rum/mount (app) (js/document.getElementById "app")))

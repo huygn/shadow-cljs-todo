@@ -24,12 +24,13 @@
 (defn loadable
   "Returns a Rum component. It will render the provided get-component's result
   if it's loaded successfully."
-  [get-component resolver]
+  [get-component render-component]
   (rum/defcs loadable-component <
     (rum/local false :loaded)
     {:did-mount (fn [state]
                   (let [loaded (:loaded state)]
-                    (-> (get-component) (.then #(reset! loaded true))))
+                    (-> (get-component)
+                        (.then #(reset! loaded true))))
                   state)}
     [{loaded :loaded}]
-    (when (true? @loaded) (resolver))))
+    (when (true? @loaded) (render-component))))

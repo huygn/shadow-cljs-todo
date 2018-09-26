@@ -11,13 +11,12 @@
         "todo" :todo}])
 
 (def components
-  {:home ((components/loadable
-           #(loader/load "page-home")
-           #((resolve 'app.pages.home/home-component))))
-   :todo (components/with-header
-           (components/loadable
-            #(loader/load "page-todo")
-            #((resolve 'app.pages.todo/todo-component))))})
+  {:home (components/loadable
+          #(loader/load "page-home")
+          #((resolve 'app.pages.home/home-component)))
+   :todo (components/loadable
+          #(loader/load "page-todo")
+          #((resolve 'app.pages.todo/todo-component)))})
 
 (defn get-component [route-state] (:component route-state))
 
